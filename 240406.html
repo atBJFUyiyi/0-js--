@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        overflow: hidden;
+      }
+      .cube {
+        width: 100px;
+        height: 100px;
+        margin: 50px;
+        background-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="cube"></div>
+    </div>
+    <div class="container">
+      <div class="cube"></div>
+    </div>
+    <script>
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        // return {
+        //   a: 111,
+        // };
+      }
+      function _new(fn, ...args) {
+        let newObj = Object.create(fn.prototype);
+        let result = fn.apply(newObj, args);
+        return result instanceof Object ? result : newObj;
+      }
+      let result = _new(Person, "yy", 12);
+      console.log(result);
+
+      function getAequence(arr) {
+        let resultIndex = [0];
+        let len = arr.length;
+        let pre = new Array(len);
+        for (let i = 1; i < len; i++) {
+          let lastIndex = resultIndex[resultIndex.length - 1];
+          if (arr[lastIndex] < arr[i]) {
+            resultIndex.push(i);
+            pre[i] = lastIndex;
+            continue;
+          }
+          let start = 0;
+          let end = resultIndex.length - 1;
+          while (start < end) {
+            let middle = Math.floor((start + end) / 2);
+            let middleIndex = resultIndex[middle];
+            if (arr[middleIndex] < arr[i]) {
+              start = middle + 1;
+            } else {
+              end = middle;
+            }
+          }
+          pre[i] = pre[resultIndex[start]];
+          resultIndex[start] = i;
+
+          console.log(i, start);
+        }
+        for (let i = resultIndex.length - 1; i > 0; i--) {
+          index = resultIndex[i];
+          preIndex = pre[index];
+          resultIndex[i - 1] = preIndex;
+        }
+        console.log(resultIndex);
+        return resultIndex.length;
+      }
+      console.log(getAequence([2, 1, 6, 7, 1, 5, 6]));
+    </script>
+  </body>
+</html>
